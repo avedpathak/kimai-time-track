@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-kimai
+  labels:
+    app.kubernetes.io/part-of: {{ .Values.metadata.applicationName }}
+    app.kubernetes.io/name: core-kimai
+    app.kubernetes.io/component: core-kimai
+spec:
+  type: NodePort
+  ports:
+    - port: 8001
+      protocol: TCP
+      targetPort: kimai-http
+      name: kimai-http
+  selector:
+    app.kubernetes.io/part-of: {{ .Values.metadata.applicationName }}
+    app.kubernetes.io/name: core-kimai
+    app.kubernetes.io/component: core-kimai

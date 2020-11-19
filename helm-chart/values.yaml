@@ -1,0 +1,36 @@
+# Values for the Helm chart for Kimai
+
+# General metadata
+metadata:
+  # -- Name for the whole application. Used at different places for labels and naming of
+  # components.
+  applicationName: kimai
+
+# Default values application wide
+default:
+  # -- Possibility to override the storage class. If left empty, your default storage class will be used
+  storageClass:
+
+# Images used for the deployment of the application
+images:
+  mysql:
+    # -- Image name for MySQL
+    name: mysql
+    # -- Image tag for MySQL
+    tag: "5.7"
+
+kimai:
+  # PVC configuration
+  pvc:
+    # PVC var for Kimai
+    var:
+      # -- Size for the PVC var for Kimai
+      size: 4Gi
+mysql:
+
+  pvc:
+    # PVC data for MySQL
+    data:
+      # -- Size for the PVC data for MySQL
+      size: 4Gi
+

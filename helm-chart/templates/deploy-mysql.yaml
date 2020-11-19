@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: additional-mysql
+  labels:
+    app.kubernetes.io/part-of: kimai
+    app.kubernetes.io/name: additional-mysql
+    app.kubernetes.io/component: additional-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: kimai
+      app.kubernetes.io/name: additional-mysql
+      app.kubernetes.io/component: additional-mysql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: kimai
+        app.kubernetes.io/name: additional-mysql
+        app.kubernetes.io/component: additional-mysql
+    spec:
+      containers:
+        - env:
+          - name: MYSQL_DATABASE
+            value: kimai
+          - name: MYSQL_USER
+            value: kimai
+          - name: MYSQL_PASSWORD
+            value: kimai
+          - name: MYSQL_ROOT_PASSWORD
+            value: changemeplease
+          image: mysql:5.7
+          name: additional-mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-data
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: additional-mysql-data

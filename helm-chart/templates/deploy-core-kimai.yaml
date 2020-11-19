@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-kimai
+  labels:
+    app.kubernetes.io/part-of: kimai
+    app.kubernetes.io/name: core-kimai
+    app.kubernetes.io/component: core-kimai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: kimai
+      app.kubernetes.io/name: core-kimai
+      app.kubernetes.io/component: core-kimai
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: kimai
+        app.kubernetes.io/name: core-kimai
+        app.kubernetes.io/component: core-kimai
+    spec:
+      containers:
+        - env:
+            - name: ADMINMAIL
+              value: admin@kimai.local
+            - name: ADMINPASS
+              value: changemeplease
+            - name: APP_ENV
+              value:
+            - name: DATABASE_URL
+              value: mysql://kimai:kimai@additional-mysql/kimai
+            - name: TRUSTED_HOSTS
+              value: localhost,kimai.local
+          image: kimai/kimai2:latest-prod
+          name: core-kimai
+          ports:
+            - containerPort: 8001
+              name: kimai
+          volumeMounts:
+            - mountPath: /opt/kimai/var
+              name: kimai-var
+      volumes:
+        - name: kimai-var
+          persistentVolumeClaim:
+            claimName: core-kimai-var
